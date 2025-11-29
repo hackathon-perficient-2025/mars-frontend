@@ -4,10 +4,11 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
+  --radius-sm: 0.75rem;
+  --radius-md: 1rem;
+  --radius-lg: 1.25rem;
+  --radius-xl: 1.5rem;
+  --radius-2xl: 2rem;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -42,91 +43,221 @@
 }
 
 :root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --radius: 1.25rem;
+
+  /* Mars-themed background with depth */
+  --background: #0a0a0a;
+  --foreground: #fafafa;
+
+  /* Liquid glass card effect - subtle tint with strong blur */
+  --card: rgba(255, 107, 53, 0.03);
+  --card-foreground: #fafafa;
+
+  --popover: rgba(20, 20, 20, 0.95);
+  --popover-foreground: #fafafa;
+
+  /* Mars orange/red primary colors */
+  --primary: #ff6b35;
+  --primary-foreground: #fafafa;
+
+  --secondary: rgba(255, 107, 53, 0.1);
+  --secondary-foreground: #fafafa;
+
+  --muted: rgba(255, 255, 255, 0.05);
+  --muted-foreground: rgba(250, 250, 250, 0.6);
+
+  --accent: #ff8c42;
+  --accent-foreground: #fafafa;
+
+  --destructive: #ef4444;
+  --border: rgba(255, 107, 53, 0.15);
+  --input: rgba(255, 255, 255, 0.05);
+  --ring: rgba(255, 107, 53, 0.5);
+
+  /* Mars-themed chart colors */
+  --chart-1: #ff6b35;
+  --chart-2: #ff8c42;
+  --chart-3: #ffb088;
+  --chart-4: #ff4500;
+  --chart-5: #ffa07a;
+
+  /* Sidebar with subtle glass */
+  --sidebar: rgba(20, 20, 20, 0.7);
+  --sidebar-foreground: #fafafa;
+  --sidebar-primary: #ff6b35;
+  --sidebar-primary-foreground: #fafafa;
+  --sidebar-accent: rgba(255, 107, 53, 0.1);
+  --sidebar-accent-foreground: #fafafa;
+  --sidebar-border: rgba(255, 107, 53, 0.1);
+  --sidebar-ring: rgba(255, 107, 53, 0.5);
 }
 
 .dark {
-  --background: oklch(0.08 0 0);
-  --foreground: oklch(0.98 0 0);
-  --card: oklch(0.12 0 0);
-  --card-foreground: oklch(0.98 0 0);
-  --popover: oklch(0.12 0 0);
-  --popover-foreground: oklch(0.98 0 0);
-  --primary: oklch(0.55 0.18 35);
-  --primary-foreground: oklch(0.98 0 0);
-  --secondary: oklch(0.25 0 0);
-  --secondary-foreground: oklch(0.98 0 0);
-  --muted: oklch(0.25 0 0);
-  --muted-foreground: oklch(0.65 0 0);
-  --accent: oklch(0.62 0.15 50);
-  --accent-foreground: oklch(0.98 0 0);
-  --destructive: oklch(0.58 0.22 30);
-  --border: oklch(0.20 0 0);
-  --input: oklch(0.25 0 0);
-  --ring: oklch(0.55 0.18 35);
-  --chart-1: oklch(0.62 0.15 50);
-  --chart-2: oklch(0.55 0.18 35);
-  --chart-3: oklch(0.65 0.12 100);
-  --chart-4: oklch(0.70 0.15 220);
-  --chart-5: oklch(0.75 0.10 60);
-  --sidebar: oklch(0.10 0 0);
-  --sidebar-foreground: oklch(0.98 0 0);
-  --sidebar-primary: oklch(0.55 0.18 35);
-  --sidebar-primary-foreground: oklch(0.98 0 0);
-  --sidebar-accent: oklch(0.18 0 0);
-  --sidebar-accent-foreground: oklch(0.98 0 0);
-  --sidebar-border: oklch(0.20 0 0);
-  --sidebar-ring: oklch(0.55 0.18 35);
+  /* Same as root - we're already dark themed */
+  --background: #0a0a0a;
+  --foreground: #fafafa;
+  --card: rgba(255, 107, 53, 0.03);
+  --card-foreground: #fafafa;
+  --popover: rgba(20, 20, 20, 0.95);
+  --popover-foreground: #fafafa;
+  --primary: #ff6b35;
+  --primary-foreground: #fafafa;
+  --secondary: rgba(255, 107, 53, 0.1);
+  --secondary-foreground: #fafafa;
+  --muted: rgba(255, 255, 255, 0.05);
+  --muted-foreground: rgba(250, 250, 250, 0.6);
+  --accent: #ff8c42;
+  --accent-foreground: #fafafa;
+  --destructive: #ef4444;
+  --border: rgba(255, 107, 53, 0.15);
+  --input: rgba(255, 255, 255, 0.05);
+  --ring: rgba(255, 107, 53, 0.5);
+  --chart-1: #ff6b35;
+  --chart-2: #ff8c42;
+  --chart-3: #ffb088;
+  --chart-4: #ff4500;
+  --chart-5: #ffa07a;
+  --sidebar: rgba(20, 20, 20, 0.7);
+  --sidebar-foreground: #fafafa;
+  --sidebar-primary: #ff6b35;
+  --sidebar-primary-foreground: #fafafa;
+  --sidebar-accent: rgba(255, 107, 53, 0.1);
+  --sidebar-accent-foreground: #fafafa;
+  --sidebar-border: rgba(255, 107, 53, 0.1);
+  --sidebar-ring: rgba(255, 107, 53, 0.5);
 }
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
+    background:
+      radial-gradient(circle at 20% 20%, rgba(255, 107, 53, 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(255, 69, 0, 0.06) 0%, transparent 50%),
+      #0a0a0a;
+    background-attachment: fixed;
   }
 
   :root {
-    --mars-red: 193 68 14;
-    --mars-orange: 232 106 51;
-    --mars-dark: 26 11 11;
-    --mars-sand: 212 165 116;
+    /* Mars theme colors */
+    --mars-red: 255 69 0;
+    --mars-orange: 255 107 53;
+    --mars-dark: 10 10 10;
+    --mars-sand: 255 176 88;
+
+    /* Status colors */
     --status-critical: 239 68 68;
     --status-warning: 245 158 11;
     --status-success: 16 185 129;
     --status-info: 59 130 246;
+
+    /* Apple-style Liquid Glass effects */
+    --glass-bg: rgba(255, 255, 255, 0.03);
+    --glass-border: rgba(255, 107, 53, 0.15);
+    --glass-highlight: rgba(255, 255, 255, 0.08);
+    --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4),
+                    0 1px 0 0 rgba(255, 107, 53, 0.1) inset,
+                    0 -1px 0 0 rgba(0, 0, 0, 0.3) inset;
+    --glass-shadow-lg: 0 12px 48px 0 rgba(0, 0, 0, 0.5),
+                       0 2px 0 0 rgba(255, 107, 53, 0.15) inset,
+                       0 -2px 0 0 rgba(0, 0, 0, 0.4) inset;
+    --glass-shadow-xl: 0 20px 64px 0 rgba(0, 0, 0, 0.6),
+                       0 3px 0 0 rgba(255, 107, 53, 0.2) inset,
+                       0 -3px 0 0 rgba(0, 0, 0, 0.5) inset;
+  }
+}
+
+/* Apple-style Liquid Glass utilities */
+@utility glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--glass-border);
+}
+
+@utility glasscard {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.05) 0%,
+    rgba(255, 255, 255, 0.02) 100%
+  );
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--glass-border);
+  border-radius: 1.5rem;
+  box-shadow: var(--glass-shadow);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@utility shadowglass {
+  box-shadow: var(--glass-shadow);
+}
+
+@utility shadowglasslg {
+  box-shadow: var(--glass-shadow-lg);
+}
+
+@utility shadowglassxl {
+  box-shadow: var(--glass-shadow-xl);
+}
+
+@utility gradientmars {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 107, 53, 0.1) 0%,
+    rgba(255, 69, 0, 0.08) 100%
+  );
+}
+
+@utility gradientaccent {
+  background: linear-gradient(
+    135deg,
+    #ff6b35 0%,
+    #ff8c42 100%
+  );
+}
+
+@utility textgradientmars {
+  background: linear-gradient(135deg, #ff6b35, #ff4500);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+@utility glowprimary {
+  box-shadow: 0 0 30px rgba(255, 107, 53, 0.4);
+}
+
+@utility glowaccent {
+  box-shadow: 0 0 30px rgba(255, 140, 66, 0.4);
+}
+
+@utility bordergradient {
+  border: 1px solid transparent;
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  background-image:
+    linear-gradient(rgba(10, 10, 10, 0.9), rgba(10, 10, 10, 0.9)),
+    linear-gradient(135deg, rgba(255, 107, 53, 0.3), rgba(255, 69, 0, 0.3));
+}
+
+@utility borderglassborder {
+  border-color: var(--glass-border);
+}
+
+@utility floating {
+  animation: floating 3s ease-in-out infinite;
+}
+
+@keyframes floating {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
   }
 }
 
