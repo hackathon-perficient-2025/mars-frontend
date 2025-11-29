@@ -1,4 +1,5 @@
 import { ResourceCard, AlertPanel, QuickActions } from '@/components/dashboard';
+import { RoverScene } from '@/components/rover';
 import { useResources, useAlerts, useResupply } from '@/hooks';
 import { LoadingSpinner } from '@/components/common';
 import { toast } from 'sonner';
@@ -70,6 +71,10 @@ export const Dashboard = () => {
         {resources.map((resource) => (
           <ResourceCard key={resource.id} resource={resource} />
         ))}
+      </div>
+
+      <div className="grid gap-6">
+        <RoverScene />
       </div>
 
       <div className="grid gap-6 md:grid-cols-3">
