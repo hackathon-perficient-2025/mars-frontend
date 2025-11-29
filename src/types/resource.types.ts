@@ -25,7 +25,7 @@ export interface Resource {
   warningThreshold: number;
   lastUpdated: Date;
   trend?: 'increasing' | 'decreasing' | 'stable';
-  estimatedDaysRemaining?: number;
+  estimatedDaysRemaining?: number | null;
   consumptionRate?: number;
 }
 

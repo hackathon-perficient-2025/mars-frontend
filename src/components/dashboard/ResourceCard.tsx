@@ -2,8 +2,11 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { StatusBadge } from '@/components/common';
 import type { Resource } from '@/types';
-import { formatResourceLevel, formatPercentage, formatDaysRemaining } from '@/utils';
-import { Wind, Droplet, UtensilsCrossed, Wrench, TrendingUp, TrendingDown, Minus, ChevronDown, ChevronUp } from 'lucide-react';
+import { formatResourceLevel, formatPercentage, formatDaysRemaining, getResourceIcon } from '@/utils';
+import { 
+  Wind, Droplet, UtensilsCrossed, Wrench, TrendingUp, TrendingDown, Minus, ChevronDown, ChevronUp,
+  TreePine, Bot, Battery, Heart, Pipette, Sprout, Bug, Waves, BatteryCharging, Users
+} from 'lucide-react';
 import { getResourceStatus } from '@/mocks';
 import { useState } from 'react';
 
@@ -18,6 +21,16 @@ const iconMap = {
   Droplet,
   UtensilsCrossed,
   Wrench,
+  TreePine,
+  Bot,
+  Battery,
+  Heart,
+  Pipette,
+  Sprout,
+  Bug,
+  Waves,
+  BatteryCharging,
+  Users,
   TrendingUp,
   TrendingDown,
   Minus,
@@ -31,10 +44,8 @@ export const ResourceCard = ({ resource, initialCollapsed, collapsible = true }:
   const status = getResourceStatus(resource);
   const percentage = (resource.currentLevel / resource.maxCapacity) * 100;
 
-  const ResourceIcon = resource.type === 'oxygen' ? iconMap.Wind
-    : resource.type === 'water' ? iconMap.Droplet
-      : resource.type === 'food' ? iconMap.UtensilsCrossed
-        : iconMap.Wrench;
+  const iconName = getResourceIcon(resource.type);
+  const ResourceIcon = iconMap[iconName as keyof typeof iconMap] || iconMap.Wrench;
 
   const TrendIcon = resource.trend === 'increasing' ? iconMap.TrendingUp
     : resource.trend === 'decreasing' ? iconMap.TrendingDown

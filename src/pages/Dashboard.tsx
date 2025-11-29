@@ -3,6 +3,7 @@ import Mars3D from '@/components/dashboard/Mars3D';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import type { Resource } from '@/types';
 import { RoverScene } from '@/components/rover';
 import { useResources, useAlerts, useResupply } from '@/hooks';
@@ -10,10 +11,16 @@ import { LoadingSpinner } from '@/components/common';
 import { toast } from 'sonner';
 
 export const Dashboard = () => {
+  const navigate = useNavigate();
   const { resources, isLoading, refreshResources } = useResources();
   const { alerts, acknowledgeAlert } = useAlerts();
   const { createRequest } = useResupply();
   const [selectedResource, setSelectedResource] = useState<Resource | null>(null);
+
+  const RESOURCES_PER_PAGE = 6;
+  const initialResources = resources.slice(0, RESOURCES_PER_PAGE);
+  const remainingResources = resources.slice(RESOURCES_PER_PAGE);
+  const hasMoreResources = remainingResources.length > 0;
 
   const handleUrgentResupply = async () => {
     const criticalResources = resources.filter(r => {
@@ -81,9 +88,19 @@ export const Dashboard = () => {
           }} />
         </div>
 
-        {resources.map((resource) => (
+        {initialResources.map((resource) => (
           <ResourceCard key={resource.id} resource={resource} initialCollapsed={false} />
         ))}
+        
+        {hasMoreResources && (
+          <Button 
+            variant="outline" 
+            className="md:col-span-2 lg:col-span-2 h-32 text-lg font-semibold"
+            onClick={() => navigate('/inventory')}
+          >
+            See more resources ({remainingResources.length} more)
+          </Button>
+        )}
       </div>
 
       <div className="grid gap-6">
@@ -122,6 +139,7 @@ export const Dashboard = () => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
     </div>
   );
 };
