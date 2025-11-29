@@ -75,7 +75,7 @@ export const RoverScene = ({
             {isConnecting ? "CONNECTING..." : rover.status.toUpperCase()}
           </Badge>
           <Badge variant="outline" className="font-mono">
-            {rover.lastCommunication.toLocaleTimeString()}
+            {new Date(rover.lastCommunication).toLocaleTimeString()}
           </Badge>
         </div>
       </CardHeader>
