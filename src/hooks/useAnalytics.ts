@@ -1,7 +1,13 @@
-import { useState, useEffect } from 'react';
-import { apiClient } from '@/utils/apiClient';
-import { endpoints } from '@/utils/endpoints';
-import type { TrendData, Anomaly, AggregatedStats, TimeRange, ResourceType } from '@/types';
+import { useState, useEffect } from "react";
+import { apiClient } from "@/utils/apiClient";
+import { endpoints } from "@/utils/endpoints";
+import type {
+  TrendData,
+  Anomaly,
+  AggregatedStats,
+  TimeRange,
+  ResourceType,
+} from "@/types";
 
 interface AnalyticsQuery {
   resourceId?: string;
@@ -21,18 +27,21 @@ export const useAnalytics = (query: AnalyticsQuery = {}) => {
       const params = new URLSearchParams();
       const finalQuery = { ...query, ...customQuery };
 
-      if (finalQuery.resourceId) params.append('resourceId', finalQuery.resourceId);
-      if (finalQuery.resourceType) params.append('resourceType', finalQuery.resourceType);
-      if (finalQuery.timeRange) params.append('timeRange', finalQuery.timeRange);
+      if (finalQuery.resourceId)
+        params.append("resourceId", finalQuery.resourceId);
+      if (finalQuery.resourceType)
+        params.append("resourceType", finalQuery.resourceType);
+      if (finalQuery.timeRange)
+        params.append("timeRange", finalQuery.timeRange);
 
       const response = await apiClient.get<TrendData[]>(
         `${endpoints.analytics.getTrends}?${params.toString()}`
       );
 
       // Parse dates
-      const parsedTrends = response.data.map(trend => ({
+      const parsedTrends = response.data.map((trend) => ({
         ...trend,
-        data: trend.data.map(d => ({
+        data: trend.data.map((d) => ({
           ...d,
           timestamp: new Date(d.timestamp),
         })),
@@ -41,7 +50,7 @@ export const useAnalytics = (query: AnalyticsQuery = {}) => {
       setTrends(parsedTrends);
       return parsedTrends;
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to fetch trends');
+      setError(err instanceof Error ? err.message : "Failed to fetch trends");
       throw err;
     }
   };
@@ -51,18 +60,21 @@ export const useAnalytics = (query: AnalyticsQuery = {}) => {
       const params = new URLSearchParams();
       const finalQuery = { ...query, ...customQuery };
 
-      if (finalQuery.resourceId) params.append('resourceId', finalQuery.resourceId);
-      if (finalQuery.resourceType) params.append('resourceType', finalQuery.resourceType);
-      if (finalQuery.timeRange) params.append('timeRange', finalQuery.timeRange);
+      if (finalQuery.resourceId)
+        params.append("resourceId", finalQuery.resourceId);
+      if (finalQuery.resourceType)
+        params.append("resourceType", finalQuery.resourceType);
+      if (finalQuery.timeRange)
+        params.append("timeRange", finalQuery.timeRange);
 
       const response = await apiClient.get<AggregatedStats[]>(
         `${endpoints.analytics.getStats}?${params.toString()}`
       );
 
       // Parse dates
-      const parsedStats = response.data.map(stat => ({
+      const parsedStats = response.data.map((stat) => ({
         ...stat,
-        peakUsageTimes: stat.peakUsageTimes.map(p => ({
+        peakUsageTimes: stat.peakUsageTimes.map((p) => ({
           ...p,
           timestamp: new Date(p.timestamp),
         })),
@@ -71,7 +83,7 @@ export const useAnalytics = (query: AnalyticsQuery = {}) => {
       setStats(parsedStats);
       return parsedStats;
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to fetch stats');
+      setError(err instanceof Error ? err.message : "Failed to fetch stats");
       throw err;
     }
   };
@@ -81,16 +93,19 @@ export const useAnalytics = (query: AnalyticsQuery = {}) => {
       const params = new URLSearchParams();
       const finalQuery = { ...query, ...customQuery };
 
-      if (finalQuery.resourceId) params.append('resourceId', finalQuery.resourceId);
-      if (finalQuery.resourceType) params.append('resourceType', finalQuery.resourceType);
-      if (finalQuery.timeRange) params.append('timeRange', finalQuery.timeRange);
+      if (finalQuery.resourceId)
+        params.append("resourceId", finalQuery.resourceId);
+      if (finalQuery.resourceType)
+        params.append("resourceType", finalQuery.resourceType);
+      if (finalQuery.timeRange)
+        params.append("timeRange", finalQuery.timeRange);
 
       const response = await apiClient.get<Anomaly[]>(
         `${endpoints.analytics.getAnomalies}?${params.toString()}`
       );
 
       // Parse dates
-      const parsedAnomalies = response.data.map(anomaly => ({
+      const parsedAnomalies = response.data.map((anomaly) => ({
         ...anomaly,
         timestamp: new Date(anomaly.timestamp),
       }));
@@ -98,7 +113,9 @@ export const useAnalytics = (query: AnalyticsQuery = {}) => {
       setAnomalies(parsedAnomalies);
       return parsedAnomalies;
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to fetch anomalies');
+      setError(
+        err instanceof Error ? err.message : "Failed to fetch anomalies"
+      );
       throw err;
     }
   };
@@ -108,16 +125,19 @@ export const useAnalytics = (query: AnalyticsQuery = {}) => {
       const params = new URLSearchParams();
       const finalQuery = { ...query, ...customQuery };
 
-      if (finalQuery.resourceId) params.append('resourceId', finalQuery.resourceId);
-      if (finalQuery.resourceType) params.append('resourceType', finalQuery.resourceType);
-      if (finalQuery.timeRange) params.append('timeRange', finalQuery.timeRange);
+      if (finalQuery.resourceId)
+        params.append("resourceId", finalQuery.resourceId);
+      if (finalQuery.resourceType)
+        params.append("resourceType", finalQuery.resourceType);
+      if (finalQuery.timeRange)
+        params.append("timeRange", finalQuery.timeRange);
 
       const response = await apiClient.get<Anomaly[]>(
         `${endpoints.analytics.detectAnomalies}?${params.toString()}`
       );
 
       // Parse dates
-      const parsedAnomalies = response.data.map(anomaly => ({
+      const parsedAnomalies = response.data.map((anomaly) => ({
         ...anomaly,
         timestamp: new Date(anomaly.timestamp),
       }));
@@ -125,7 +145,9 @@ export const useAnalytics = (query: AnalyticsQuery = {}) => {
       setAnomalies(parsedAnomalies);
       return parsedAnomalies;
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to detect anomalies');
+      setError(
+        err instanceof Error ? err.message : "Failed to detect anomalies"
+      );
       throw err;
     }
   };
@@ -134,13 +156,9 @@ export const useAnalytics = (query: AnalyticsQuery = {}) => {
     setIsLoading(true);
     setError(null);
     try {
-      await Promise.all([
-        fetchTrends(),
-        fetchStats(),
-        fetchAnomalies(),
-      ]);
+      await Promise.all([fetchTrends(), fetchStats(), fetchAnomalies()]);
     } catch (err) {
-      console.error('Error refreshing analytics:', err);
+      console.error("Error refreshing analytics:", err);
     } finally {
       setIsLoading(false);
     }
@@ -148,6 +166,7 @@ export const useAnalytics = (query: AnalyticsQuery = {}) => {
 
   useEffect(() => {
     refresh();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [query.resourceId, query.resourceType, query.timeRange]);
 
   return {
