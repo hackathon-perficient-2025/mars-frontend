@@ -1,10 +1,12 @@
 import { useState, useEffect, useCallback } from 'react';
 import type { Resource } from '@/types';
-import { MOCK_RESOURCES } from '@/mocks';
+import { apiClient } from '@/utils/apiClient';
+import { endpoints } from '@/utils/endpoints';
+import { socket } from '@/utils/socketClient';
 import { REFRESH_INTERVAL } from '@/utils';
 
 export const useResources = () => {
-  const [resources, setResources] = useState<Resource[]>(MOCK_RESOURCES);
+  const [resources, setResources] = useState<Resource[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -13,35 +15,51 @@ export const useResources = () => {
     setError(null);
 
     try {
-      await new Promise(resolve => setTimeout(resolve, 500));
-
-      const updatedResources = resources.map(resource => ({
-        ...resource,
-        currentLevel: Math.max(
-          0,
-          resource.currentLevel - (Math.random() * 10)
-        ),
-        lastUpdated: new Date(),
-      }));
-
-      setResources(updatedResources);
+      const response = await apiClient.get<Resource[]>(endpoints.resources.getAll);
+      setResources(response.data);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to fetch resources');
+      console.error('Failed to fetch resources:', err);
     } finally {
       setIsLoading(false);
     }
-  }, [resources]);
+  }, []);
 
   const refreshResources = useCallback(() => {
     fetchResources();
   }, [fetchResources]);
 
   useEffect(() => {
+    // Initial fetch
+    fetchResources();
+
+    // WebSocket listeners
+    const handleResourcesInitial = (data: Resource[]) => {
+      console.log('📦 Received initial resources via WebSocket');
+      setResources(data);
+    };
+
+    const handleResourcesUpdated = (data: Resource[]) => {
+      console.log('🔄 Resources updated via WebSocket');
+      setResources(data);
+    };
+
+    socket.on('resources:initial', handleResourcesInitial);
+    socket.on('resources:updated', handleResourcesUpdated);
+
+    // Fallback polling (in case WebSocket fails)
     const interval = setInterval(() => {
-      fetchResources();
+      if (!socket.connected) {
+        console.log('⚠️ WebSocket disconnected, using REST polling');
+        fetchResources();
+      }
     }, REFRESH_INTERVAL);
 
-    return () => clearInterval(interval);
+    return () => {
+      socket.off('resources:initial', handleResourcesInitial);
+      socket.off('resources:updated', handleResourcesUpdated);
+      clearInterval(interval);
+    };
   }, [fetchResources]);
 
   return {
