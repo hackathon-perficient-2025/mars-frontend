@@ -1,20 +1,10 @@
 import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
-import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useResources } from '@/hooks';
-import { StatusBadge } from '@/components/common';
+import { ResourceCard } from '@/components/dashboard';
 import { getResourceStatus } from '@/mocks';
-import { formatResourceLevel, formatPercentage, formatRelativeTime } from '@/utils';
 import { Search } from 'lucide-react';
 
 export const Inventory = () => {
@@ -72,54 +62,15 @@ export const Inventory = () => {
           </div>
         </CardHeader>
         <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Resource</TableHead>
-                <TableHead>Type</TableHead>
-                <TableHead>Current Level</TableHead>
-                <TableHead>Capacity</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Trend</TableHead>
-                <TableHead>Last Updated</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filteredResources.map((resource) => {
-                const status = getResourceStatus(resource);
-                return (
-                  <TableRow key={resource.id}>
-                    <TableCell className="font-medium">{resource.name}</TableCell>
-                    <TableCell>
-                      <Badge variant="outline">{resource.type.replace('_', ' ')}</Badge>
-                    </TableCell>
-                    <TableCell>{formatResourceLevel(resource.currentLevel, resource.unit)}</TableCell>
-                    <TableCell>
-                      <div className="space-y-1">
-                        <div className="text-sm">
-                          {formatResourceLevel(resource.maxCapacity, resource.unit)}
-                        </div>
-                        <div className="text-xs text-muted-foreground">
-                          {formatPercentage(resource.currentLevel, resource.maxCapacity)}
-                        </div>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <StatusBadge status={status} />
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant="outline" className="capitalize">
-                        {resource.trend || 'stable'}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="text-sm text-muted-foreground">
-                      {formatRelativeTime(resource.lastUpdated)}
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            {filteredResources.map((resource) => (
+              <ResourceCard 
+                key={resource.id} 
+                resource={resource}
+                initialCollapsed={false}
+              />
+            ))}
+          </div>
         </CardContent>
       </Card>
     </div>
