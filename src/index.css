@@ -115,7 +115,7 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground dark;
+    @apply bg-background text-foreground;
   }
 
   :root {
@@ -128,4 +128,8 @@
     --status-success: 16 185 129;
     --status-info: 59 130 246;
   }
+}
+
+html {
+  color-scheme: dark;
 }
