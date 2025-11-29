@@ -1,63 +1,56 @@
 import { useState, useEffect, useCallback } from 'react';
 import type { RoverStatus } from '@/types/rover.types';
-import { MOCK_ROVERS } from '@/mocks/rover.mock';
+import { apiClient } from '@/utils/apiClient';
+import { endpoints } from '@/utils/endpoints';
+import { socket } from '@/utils/socketClient';
 
 export const useRovers = () => {
-    const [rovers, setRovers] = useState<RoverStatus[]>(MOCK_ROVERS);
+    const [rovers, setRovers] = useState<RoverStatus[]>([]);
     const [isConnecting, setIsConnecting] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
-    const updateRoversData = useCallback(() => {
-        setRovers((prevRovers) => {
-            return prevRovers.map(rover => {
-                // Different simulation logic based on status
-                if (rover.status === 'error') {
-                    // Critical rover gets worse or stays bad
-                    return {
-                        ...rover,
-                        temperature: Math.min(120, rover.temperature + (Math.random() * 0.5)),
-                        batteryLevel: Math.max(0, Number((rover.batteryLevel - 0.005).toFixed(2))),
-                        lastCommunication: new Date(rover.lastCommunication.getTime()), // No new comms
-                    };
-                }
+    const fetchRovers = useCallback(async () => {
+        setIsConnecting(true);
+        setError(null);
 
-                // Healthy rover simulation
-                const speedChange = Math.random() > 0.7 ? (Math.random() - 0.5) * 0.5 : 0;
-                const newSpeed = Math.max(0, Math.min(5, rover.speed + speedChange));
-
-                const tempChange = (Math.random() - 0.5) * 0.2;
-                const batteryDrain = rover.speed > 0 ? 0.01 : 0.001;
-
-                return {
-                    ...rover,
-                    speed: Number(newSpeed.toFixed(2)),
-                    temperature: Number((rover.temperature + tempChange).toFixed(1)),
-                    batteryLevel: Math.max(0, Number((rover.batteryLevel - batteryDrain).toFixed(2))),
-                    lastCommunication: new Date(),
-                    wheels: rover.speed > 0 && Math.random() > 0.95 ? {
-                        ...rover.wheels,
-                        [Object.keys(rover.wheels)[Math.floor(Math.random() * 6)]]: Math.max(0, Object.values(rover.wheels)[Math.floor(Math.random() * 6)] - 0.1)
-                    } : rover.wheels
-                };
-            });
-        });
+        try {
+            const response = await apiClient.get<RoverStatus[]>(endpoints.rovers.getAll);
+            setRovers(response.data);
+        } catch (err) {
+            setError(err instanceof Error ? err.message : 'Failed to fetch rovers');
+            console.error('Failed to fetch rovers:', err);
+        } finally {
+            setIsConnecting(false);
+        }
     }, []);
 
     useEffect(() => {
-        setIsConnecting(true);
-        const timeout = setTimeout(() => {
-            setIsConnecting(false);
-        }, 1000);
+        // Initial fetch
+        fetchRovers();
 
-        const interval = setInterval(updateRoversData, 2000);
+        // WebSocket listeners
+        const handleRoversInitial = (data: RoverStatus[]) => {
+            console.log('🚀 Received initial rovers via WebSocket');
+            setRovers(data);
+        };
+
+        const handleRoversUpdated = (data: RoverStatus[]) => {
+            console.log('🔄 Rovers updated via WebSocket');
+            setRovers(data);
+        };
+
+        socket.on('rovers:initial', handleRoversInitial);
+        socket.on('rovers:updated', handleRoversUpdated);
 
         return () => {
-            clearTimeout(timeout);
-            clearInterval(interval);
+            socket.off('rovers:initial', handleRoversInitial);
+            socket.off('rovers:updated', handleRoversUpdated);
         };
-    }, [updateRoversData]);
+    }, [fetchRovers]);
 
     return {
         rovers,
         isConnecting,
+        error,
     };
 };

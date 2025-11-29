@@ -1,16 +1,66 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { RoverScene } from '@/components/rover';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Rocket, Box, AlertTriangle, CheckCircle2 } from 'lucide-react';
+import { Rocket, Box, AlertTriangle, CheckCircle2, Loader2 } from 'lucide-react';
 import { useRovers } from '@/hooks';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 
 export const Vehicles = () => {
-    const { rovers, isConnecting } = useRovers();
-    const [selectedRoverId, setSelectedRoverId] = useState<string>(rovers[0]?.id || '');
+    const { rovers, isConnecting, error } = useRovers();
+    const [selectedRoverId, setSelectedRoverId] = useState<string>('');
 
-    const selectedRover = rovers.find(r => r.id === selectedRoverId) || rovers[0];
+    // Set initial selected rover when data loads
+    useEffect(() => {
+        if (rovers.length > 0 && !selectedRoverId) {
+            setSelectedRoverId(rovers[0].id);
+        }
+    }, [rovers, selectedRoverId]);
+
+    const selectedRover = rovers.find(r => r.id === selectedRoverId);
+
+    // Show loading state
+    if (isConnecting || rovers.length === 0) {
+        return (
+            <div className="space-y-6">
+                <div>
+                    <h1 className="text-3xl font-bold tracking-tight">Mars Vehicles</h1>
+                    <p className="text-muted-foreground">
+                        Monitor and control deployed surface vehicles
+                    </p>
+                </div>
+                <Card>
+                    <CardContent className="flex items-center justify-center h-[400px]">
+                        <div className="text-center">
+                            <Loader2 className="h-12 w-12 animate-spin mx-auto mb-4 text-primary" />
+                            <p className="text-muted-foreground">
+                                {error ? `Error: ${error}` : 'Loading rover data...'}
+                            </p>
+                        </div>
+                    </CardContent>
+                </Card>
+            </div>
+        );
+    }
+
+    // Show error if no selected rover
+    if (!selectedRover) {
+        return (
+            <div className="space-y-6">
+                <div>
+                    <h1 className="text-3xl font-bold tracking-tight">Mars Vehicles</h1>
+                    <p className="text-muted-foreground">
+                        Monitor and control deployed surface vehicles
+                    </p>
+                </div>
+                <Card>
+                    <CardContent className="flex items-center justify-center h-[400px]">
+                        <div className="text-center text-muted-foreground">No rover selected</div>
+                    </CardContent>
+                </Card>
+            </div>
+        );
+    }
 
     return (
         <div className="space-y-6">
