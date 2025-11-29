@@ -11,14 +11,14 @@ export interface RoverStatus {
   batteryLevel: number; // 0-100
   speed: number; // km/h
   temperature: number; // Celsius
-  status: 'active' | 'idle' | 'charging' | 'error';
+  status: "active" | "idle" | "charging" | "error";
   coordinates: {
     latitude: number;
     longitude: number;
   };
-  lastCommunication: Date;
-  cameraStatus: 'online' | 'offline';
-  drillStatus: 'stowed' | 'active' | 'error';
+  lastCommunication: Date | string;
+  cameraStatus: "online" | "offline";
+  drillStatus: "stowed" | "active" | "error";
   wheels: {
     fl: number; // pressure or health 0-100
     fr: number;

@@ -36,4 +36,10 @@ export const endpoints = {
         update: (id: string) => `/rovers/${id}`,
         delete: (id: string) => `/rovers/${id}`,
     },
+    analytics: {
+        getTrends: '/analytics/trends',
+        getStats: '/analytics/stats',
+        detectAnomalies: '/analytics/anomalies/detect',
+        getAnomalies: '/analytics/anomalies',
+    },
 };
