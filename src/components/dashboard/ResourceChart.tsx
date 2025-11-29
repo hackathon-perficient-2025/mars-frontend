@@ -26,15 +26,15 @@ export const ResourceChart = ({ data, resourceType, title }: ResourceChartProps)
   const getColor = () => {
     switch (resourceType) {
       case 'oxygen':
-        return '#3b82f6';
+        return 'hsl(var(--chart-1))';
       case 'water':
-        return '#0ea5e9';
+        return 'hsl(var(--chart-2))';
       case 'food':
-        return '#22c55e';
+        return 'hsl(var(--chart-3))';
       case 'spare_parts':
-        return '#a855f7';
+        return 'hsl(var(--chart-4))';
       default:
-        return '#3b82f6';
+        return 'hsl(var(--chart-1))';
     }
   };
 

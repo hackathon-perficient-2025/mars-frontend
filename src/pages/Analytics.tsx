@@ -399,7 +399,7 @@ export const Analytics = () => {
                         dataKey="level"
                         stroke="hsl(var(--chart-1))"
                         fill="url(#colorLevel)"
-                        strokeWidth={2}
+                        strokeWidth={3}
                         name="Actual Level"
                       />
                       <Area

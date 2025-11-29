@@ -74,12 +74,12 @@
   --input: rgba(255, 255, 255, 0.05);
   --ring: rgba(255, 107, 53, 0.5);
 
-  /* Mars-themed chart colors */
-  --chart-1: #ff6b35;
-  --chart-2: #ff8c42;
-  --chart-3: #ffb088;
-  --chart-4: #ff4500;
-  --chart-5: #ffa07a;
+  /* Mars-themed chart colors in HSL format */
+  --chart-1: 14 100% 60%;
+  --chart-2: 20 100% 63%;
+  --chart-3: 18 100% 80%;
+  --chart-4: 16 100% 50%;
+  --chart-5: 17 100% 74%;
 
   /* Sidebar with subtle glass */
   --sidebar: rgba(20, 20, 20, 0.7);
@@ -112,11 +112,11 @@
   --border: rgba(255, 107, 53, 0.15);
   --input: rgba(255, 255, 255, 0.05);
   --ring: rgba(255, 107, 53, 0.5);
-  --chart-1: #ff6b35;
-  --chart-2: #ff8c42;
-  --chart-3: #ffb088;
-  --chart-4: #ff4500;
-  --chart-5: #ffa07a;
+  --chart-1: 14 100% 60%;
+  --chart-2: 20 100% 63%;
+  --chart-3: 18 100% 80%;
+  --chart-4: 16 100% 50%;
+  --chart-5: 17 100% 74%;
   --sidebar: rgba(20, 20, 20, 0.7);
   --sidebar-foreground: #fafafa;
   --sidebar-primary: #ff6b35;
