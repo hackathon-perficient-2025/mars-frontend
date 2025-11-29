@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, Sphere } from '@react-three/drei';
 import * as THREE from 'three';
+import marsTexture from './mars.jpg';
 import type { ResourceType } from '@/types';
 
 type Pin = {
@@ -72,8 +73,7 @@ const FlickeringPin: React.FC<FlickeringPinProps> = ({ pin, onPinClick }) => {
 };
 
 export const Mars3D: React.FC<{ onPinClick?: (type: ResourceType) => void }> = ({ onPinClick }) => {
-  const textureUrl = 'https://threejs.org/examples/textures/land_ocean_ice_cloud_2048.jpg';
-  const texture = new THREE.TextureLoader().load(textureUrl);
+  const texture = new THREE.TextureLoader().load(marsTexture);
 
   return (
     <div className="w-full h-80">
