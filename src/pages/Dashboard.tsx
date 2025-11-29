@@ -1,4 +1,9 @@
 import { ResourceCard, AlertPanel, QuickActions } from '@/components/dashboard';
+import Mars3D from '@/components/dashboard/Mars3D';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { useState } from 'react';
+import type { Resource } from '@/types';
 import { useResources, useAlerts, useResupply } from '@/hooks';
 import { LoadingSpinner } from '@/components/common';
 import { toast } from 'sonner';
@@ -7,6 +12,7 @@ export const Dashboard = () => {
   const { resources, isLoading, refreshResources } = useResources();
   const { alerts, acknowledgeAlert } = useAlerts();
   const { createRequest } = useResupply();
+  const [selectedResource, setSelectedResource] = useState<Resource | null>(null);
 
   const handleUrgentResupply = async () => {
     const criticalResources = resources.filter(r => {
@@ -67,6 +73,13 @@ export const Dashboard = () => {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <div className="md:col-span-2 lg:col-span-2">
+          <Mars3D onPinClick={(type) => {
+            const res = resources.find(r => r.type === type);
+            setSelectedResource(res ?? null);
+          }} />
+        </div>
+
         {resources.map((resource) => (
           <ResourceCard key={resource.id} resource={resource} />
         ))}
@@ -76,6 +89,7 @@ export const Dashboard = () => {
         <div className="md:col-span-2">
           <AlertPanel alerts={alerts} onAcknowledge={acknowledgeAlert} />
         </div>
+
         <div>
           <QuickActions
             onUrgentResupply={handleUrgentResupply}
@@ -83,6 +97,26 @@ export const Dashboard = () => {
           />
         </div>
       </div>
+
+      {/* Dialog to show resource details when a planet-button is clicked */}
+      <Dialog open={!!selectedResource} onOpenChange={(open) => { if (!open) setSelectedResource(null); }}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{selectedResource?.name ?? 'Resource'}</DialogTitle>
+            <DialogDescription>
+              Detailed resource information
+            </DialogDescription>
+          </DialogHeader>
+          {selectedResource && (
+            <div className="py-2">
+              <ResourceCard resource={selectedResource} />
+            </div>
+          )}
+          <DialogFooter>
+            <Button onClick={() => setSelectedResource(null)}>Close</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
